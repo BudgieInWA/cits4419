@@ -38,7 +38,7 @@ def not_found_json(message="The resource you requested doesn't exist."):
     """Returns stuff that flask will render as a 'not found' error response in json."""
     return json_error("Not Found", message, 404);
 
-def json_error(code, error, message):
+def json_error(error, message, code):
     """Returns stuff that flask will render as an error response in json."""
     return flask.jsonify({"error": error, "message": message}), code
 
