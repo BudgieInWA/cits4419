@@ -24,7 +24,7 @@ app = flask.Flask(__name__)
 @app.route("/")
 def hello_world():
     people = get_database("prefs").execute("SELECT * FROM people");
-    return "Hello World!<br/>" + "<br/>".join(p["person"] for p in people)
+    return "Hello World!<br/>" + "<br/>".join(p["name"] for p in people)
 
 
 # RESTful API stuff
@@ -42,15 +42,16 @@ def json_error(code, error, message):
 # API routes.
 @app.route(API_BASE + "people", methods=['GET'])
 def list_people():
-    people = get_database("prefs").execute("SELECT * FROM people");
+    people = get_database("prefs").execute("SELECT people.id, people.name FROM people");
     return flask.jsonify({"people": [dict_from_row(p) for p in people]})
 
 @app.route(API_BASE + "people/<string:person>", methods=['GET'])
 def get_person(person):
-    people = get_database("prefs").execute("SELECT * FROM people WHERE person=?", (person,));
+    people = get_database("prefs").execute("SELECT * FROM people WHERE id=?", (person,));
     p = people.fetchone()
     if not p: return not_found_json("The person '%s' doesn't exist." % person);
     return flask.jsonify(dict_from_row(p))
+
 
 
 if __name__ == "__main__":
