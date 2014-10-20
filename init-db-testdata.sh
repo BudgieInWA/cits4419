@@ -1,4 +1,4 @@
 
-sqlite3 preferences.sqlite < preferences-test.sql &&
+sqlite3 preferences.sqlite < preferences-test.sql && echo "Preferences test data added."
 
-echo "All Done :)"
+echo "All done adding test data :)"
