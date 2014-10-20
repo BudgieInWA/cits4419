@@ -4,6 +4,8 @@ recognition automation and a REASTful API for reading the detection sensor."""
 import flask
 import sqlite3
 
+API_BASE = "/apiv0/"
+
 DB_PATH   = "../"
 DB_NAME = {
     "prefs": "preferences.sqlite",
@@ -11,11 +13,11 @@ DB_NAME = {
 }
 
 def get_database(db):
+    """Loads the 'prefs' or the 'sensor' database and returns the sqlite connection object."""
     ret = sqlite3.connect(DB_PATH + DB_NAME[db]);
     ret.row_factory = sqlite3.Row
     return ret
 
-API_BASE = "/apiv0/"
 
 app = flask.Flask(__name__)
 
@@ -29,17 +31,19 @@ def hello_world():
 
 # RESTful API stuff
 def dict_from_row(row):
+    """Converts an sqlite3.Row into a python dict."""
     return dict(zip(row.keys(), row))       
 
 def not_found_json(message="The resource you requested doesn't exist."):
-    """Returns stuff that flask will render as a json not found error response."""
+    """Returns stuff that flask will render as a 'not found' error response in json."""
     return json_error("Not Found", message, 404);
 
 def json_error(code, error, message):
-    """Returns stuff thta flask will render as a json error response."""
+    """Returns stuff that flask will render as an error response in json."""
     return flask.jsonify({"error": error, "message": message}), code
 
-def get_person_last_seen(person):
+def get_last_seen(person):
+    """Returns the last time the person was recognised, or '0000-00-00 00:00:00' for 'never'."""
     events = get_database("sensor").execute(
             "SELECT datetime FROM recognition_events WHERE person=? " +
             "ORDER BY datetime DESC LIMIT 1",
@@ -50,6 +54,7 @@ def get_person_last_seen(person):
 # API routes.
 @app.route(API_BASE + "<path:garbage>")
 def bad_api_call(garbage):
+    """Catches unknown urls under the API "dir" to render a json 404."""
     return not_found_json("The url you are requesting isn't a valid api url.")
 
 @app.route(API_BASE + "people", methods=['GET'])
@@ -58,7 +63,7 @@ def list_people():
     resp = {"people": []}
     for p in people:
         d = dict_from_row(p)
-        d["last_seen"] = get_person_last_seen(p["id"])
+        d["last_seen"] = get_last_seen(p["id"])
         resp["people"].append(d)
     return flask.jsonify(resp)
 
@@ -68,7 +73,7 @@ def get_person(person):
     p = people.fetchone()
     if not p: return not_found_json("The person '%s' doesn't exist." % person);
     d = dict_from_row(p)
-    d["last_seen"] = get_person_last_seen(p["id"])
+    d["last_seen"] = get_last_seen(p["id"])
     return flask.jsonify(d)
 
 @app.route(API_BASE + "events", methods=['GET'])
