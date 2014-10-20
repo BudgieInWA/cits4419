@@ -1,10 +1,13 @@
 Introduction
 ============
 
-This API allows clients to request recongnition events and last seen times of people in a RESTful
-manner. See the sections below for the request types that can be made.
+This API allows clients to request recongnition events and last seen times of
+people in a RESTful manner. See the sections below for the request types that
+can be made.
 
 All responses are in the form of a JSON object.
+
+Parameters are provided in the query string.
 
 People
 ======
@@ -16,8 +19,8 @@ apiv1/people
 
 List the people that the sensor can recognise.
 
-If a person hasn't ever been recognised by the sensor, the last_seen field will be 
-"0000-00-00 00:00:00".
+If a person hasn't ever been recognised by the sensor, the last_seen field will
+be "0000-00-00 00:00:00".
 
 Example Response:
 ```json
@@ -70,7 +73,8 @@ List recognition events.
 Parameters:
 
 * person (optional): list events relating to this person only.
-* after (optional): list events after the given timestamp. The timestamp may be incomplete.
+* after (optional): list events after the given timestamp. The timestamp may be
+  incomplete.
 
 Example Response for `apiv1/events`:
 
@@ -114,5 +118,19 @@ Example Response for `apiv1/events?after=2014-04-04%2010:00:00`:
       "person": "alice"
     }
   ]
+}
+```
+
+Errors
+======
+
+Errors will be in the form of a JSON object with an "error" field and a human
+readable "message" field.
+
+Example Response for `apiv1/wally`
+```json
+{
+  "error": "Not Found",
+  "message": "The url you are requesting isn't a valid api url."
 }
 ```
