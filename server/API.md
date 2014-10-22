@@ -5,7 +5,8 @@ This API allows clients to request recongnition events and last seen times of
 people in a RESTful manner. See the sections below for the request types that
 can be made.
 
-All responses are in the form of a JSON object.
+All requests should be GET requests and all responses are in the form of a JSON
+object.
 
 Parameters are provided in the query string.
 
@@ -68,13 +69,18 @@ The sensor emits a recognition event whenever it recognises someone.
 apiv1/events
 ------------
 
-List recognition events.
+List recognition events, newest first.
 
 Parameters:
 
 * person (optional): list events relating to this person only.
 * after (optional): list events after the given timestamp. The timestamp may be
   incomplete.
+
+New events will never have a timestamp earlier than the timestamp on any
+previously returned event. Because of this, it is recommended that any
+subsequent requests you make include the timestamp of the most recent event you
+have recieved.
 
 Example Response for `apiv1/events`:
 
