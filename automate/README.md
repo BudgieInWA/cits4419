@@ -1,3 +1,13 @@
-This is a python script that listens for new events being written to the sensor database and reacts
-to them. When a new event is discovered, the preferences are read from the database and a request is
-sent to the switches API to set the required switches.
+Overview
+========
+This is responsible for reacting to sensor recognition events and performing the automation.
+
+Setup
+=====
+None :)
+
+Running
+=======
+This Script does not constantly run, but instead should be called whenever a person is recognised:
+
+	$ python recognised.py bob
