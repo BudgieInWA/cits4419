@@ -1,42 +1,12 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+{% extends "layout.html" %}
+{% block content %}
+<h1>List Of Switches</h1>
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-		<title>List of Switches | Site Title</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/component.css" />
-	</head>
-	<body>
-		<div class="container">
-			<header>
-                <h1>Site Title</h1>
-                <ul>
-                	<li><a href="index.html">Home</a></li>
-                    <li><a href="ListOfPeople.html">List of People</a></li>
-                    <li><a href="ListOfSwitches.html" class="active">List of Switches</a></li>
-                </ul>
-            </header>
-            <div class="main">
-                <div class="inner">
-                    <h1>List Of Switches</h1>
-                    
-                    <br>
-                    <div id="switches">
-						{% for s in switches %}
-						<li><a href="/switches/{{s.id}}">{{s.id}}: {{s.description}}</a></li>
-						{% endfor %}
-                    </div>
-                </div>
-                <div class="clr"></div>
-    			<footer> 
-                    <div class="mainFooter">
-                    <div class="privHold">
-                         <pre> &copy; 2012 | Site title | All rights reserved</pre>
-                     </div>
-                     </div>
-    			</footer>
-            </div>
-	   </div>
-	</body>
-</html>
+<p>Click on a switch to view or modify the effects of recognitions on the switch.<p>
+
+<div id="switches">
+	{% for s in switches %}
+	<li><a href="/switches/{{s.id}}">{{s.description}}</a></li>
+	{% endfor %}
+</div>
+{% endblock %}

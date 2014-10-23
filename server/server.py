@@ -20,11 +20,13 @@ def get_database(db):
     return ret
 
 
-app = flask.Flask(__name__)
+app = flask.Flask(__name__, static_url_path='')
+app.config.from_object(__name__)
 
 
 pattern = re.compile("pts\[([a-z]+)\]\[([0-9]+)\]")
 def save_prefs(prefs, data):
+    print("saving prefs")
     for k in data:
         res = pattern.match(k) 
         if res:
@@ -40,17 +42,18 @@ def save_prefs(prefs, data):
                 else: continue;
                 prefs.execute("REPLACE INTO person_to_switch VALUES(?,?,?)",
                         (p,s,v))
+    prefs.commit()
 
 # Website routes.
 @app.route("/")
 def hello_world():
-    people = get_database("prefs").execute("SELECT * FROM people");
-    return "Hello World!<br/>" + "<br/>".join(p["name"] for p in people)
+    return flask.render_template('index.html')
 
 @app.route("/people", methods=["GET"])
 def site_list_people():
     people = get_database("prefs").execute("SELECT * FROM people");
-    return "List of people:<br/>" + "<br/>".join(p["name"] for p in people)
+    return flask.render_template('people.html', people=people)
+    
 
 @app.route("/people/<string:person>", methods=["GET", "POST"])
 def site_person_settings(person):
@@ -62,29 +65,28 @@ def site_person_settings(person):
     people = prefs.execute("SELECT * FROM people WHERE id=?",
             (person,));
     p = people.fetchone()
-    if not p: abort(404, "Person %s couldn't be found"%person)
+    if not p: flask.abort(404, "Person %s couldn't be found"%person)
     
-    entries = prefs.execute("SELECT * FROM person_to_switch WHERE person=?",
-            (person,))
+    switches = prefs.execute("SELECT * FROM switches")
+    entries = prefs.execute("SELECT * FROM person_to_switch WHERE person=?", (person,))
     vals = {}
     for e in entries:
         vals[e['switch']] = e['state']
 
-    out = [p['name'] + " Settings"]
+    print(vals)
 
-    switches = prefs.execute("SELECT * FROM switches")
+    es = []
     for s in switches:
-        state = "not set"
+        state = "notset"
         if s['id'] in vals:
             state = "on" if vals[s['id']] else "off"
-        out.append("switch %d is %s" % (s['id'], state))
-
-    return "<br/>".join(out)
+        es.append({'person':p, 'switch':s, 'state':state})
+    return flask.render_template('person.html', person=p, entries=es)
 
 @app.route("/switches", methods=["GET"])
 def site_list_switches():
     switches = get_database("prefs").execute("SELECT * FROM switches");
-    return "List of switches:<br/>" + "<br/>".join(s["description"] for s in switches)
+    return flask.render_template('switches.html', switches=switches)
 
 @app.route("/switches/<int:switch>", methods=["GET", "POST"])
 def site_switch_details(switch):
@@ -96,24 +98,22 @@ def site_switch_details(switch):
     switches = prefs.execute("SELECT * FROM switches WHERE id=?",
             (switch,));
     s = switches.fetchone()
-    if not s: abort(404, "Switch %s couldn't be found"%switch)
+    if not s: flask.abort(404, "Switch %s couldn't be found"%switch)
     
-    entries = prefs.execute("SELECT * FROM person_to_switch WHERE switch=?",
-            (switch,))
+    people = prefs.execute("SELECT * FROM people")
+    entries = prefs.execute("SELECT * FROM person_to_switch WHERE switch=?", (switch,))
     vals = {}
     for e in entries:
         vals[e['person']] = e['state']
 
-    out = [s['description'] + " Settings"]
-
-    people = prefs.execute("SELECT * FROM people")
+    es = []
     for p in people:
-        state = "not set"
+        state = "notset"
         if p['id'] in vals:
             state = "on" if vals[p['id']] else "off"
-        out.append("person %s makes this %s" % (p['name'], state))
+        es.append({'person':p, 'switch':s, 'state':state})
 
-    return "<br/>".join(out)
+    return flask.render_template('switch.html', switch=s, entries=es)
 
 # RESTful API stuff
 def dict_from_row(row):

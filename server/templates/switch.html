@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Actions effecting {{switch.description}}</h1>
+
+<form method="post">
+	<p>What to do to this switch:</p>
+	<ul>
+		{% for e in entries %}
+		<li>
+			When {{e.person.name}} is recognised
+			<select name="pts[{{e.person.id}}][{{e.switch.id}}]">
+				<option value="notset" {% if e.state == "notset" %}selected{% endif %}>don't change it</option>
+				<option value="on"     {% if e.state == "on"     %}selected{% endif %}>turn it on</option>
+				<option value="off"    {% if e.state == "off"    %}selected{% endif %}>turn it off</option>
+			</select>
+			.
+		</li>
+		{% endfor %}
+	</ul>
+	<input type="submit" value="Save Preferences" />
+</form>
+{% endblock %}
