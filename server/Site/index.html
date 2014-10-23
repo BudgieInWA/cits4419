@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+		<title>Site Title</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+	</head>
+	<body>
+		<div class="container">
+			<header>
+                <h1>Face Recognition</h1>
+                <ul>
+                	<li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="ListOfPeople.html">List of People</a></li>
+                    <li><a href="ListOfSwitches.html">List of Switches</a></li>
+                </ul>
+            </header>
+            <div class="main">
+            <div class="inner">
+                <div id="tabs" class="tabs">
+                <nav>
+                    <ul>
+                    	<li><a href="#section-1" class="icon-home"><span>Home Page</span></a></li>
+						<li><a href="#section-2" class="icon-cup"><span>List of People</span></a></li>
+						<li><a href="#section-3" class="icon-food"><span>List of switches</span></a></li>
+                    </ul>
+                </nav>
+                <div class="content">
+                    <section id="section-1">
+                            <h3>Description</h3>
+                            <p>We use OpenCV to perform facial recognition to identify users. When a user is recognised, switches
+are turned on or off using the switches api depending on the user inputted preferences.</p>
+                    </section>
+                    <section id="section-2">
+                            <h3>Description-Lists of people</h3>
+                            <p>List of people added to the database.</p>
+                    </section>
+                    <section id="section-3">
+                            <h3>Description-Lists of swicthes</h3>
+                            <p>Switches been assigned</p>
+                    </section>
+                </div><!-- /content -->
+            </div><!-- /tabs -->
+            </div>
+            </div>
+            <div class="clr"></div>
+			<footer> 
+                <div class="mainFooter">
+                <div class="privHold">
+                     <pre> &copy; 2012 | Site title | All rights reserved</pre>
+                 </div>
+                 </div>
+			</footer>
+            </div>
+	</div>
+	
+    <script src="js/cbpFWTabs.js"></script>
+        <script>
+            new CBPFWTabs( document.getElementById( 'tabs' ) );
+        </script>
+
+	</body>
+
+</html>
