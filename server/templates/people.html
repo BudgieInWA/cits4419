@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+		<title>List of People | Site Title</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+	</head>
+	<body>
+		<div class="container">
+			<header>
+                <h1>Site Title</h1>
+                <ul>
+                	<li><a href="index.html">Home</a></li>
+                    <li><a href="ListOfPeople.html" class="active">List of People</a></li>
+                    <li><a href="ListOfSwitches.html">List of Switches</a></li>
+                </ul>
+            </header>
+            <div class="main">
+                <div class="inner">
+                    <h1>List Of People</h1>
+                    
+                    <ol class="people">
+						{% for p in people %}
+						<li><a href="/people/{{p.id}}">{{p.name}}</a></li>
+						{% endfor %}
+                    </ol>
+                </div>
+                <div class="clr"></div>
+    			<footer> 
+                    <div class="mainFooter">
+                    <div class="privHold">
+                         <pre> &copy; 2012 | Site title | All rights reserved</pre>
+                     </div>
+                     </div>
+    			</footer>
+            </div>
+	   </div>
+	</body>
+</html>

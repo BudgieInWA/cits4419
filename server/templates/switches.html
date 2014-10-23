@@ -3,7 +3,7 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-		<title>List of People | Site Title</title>
+		<title>List of Switches | Site Title</title>
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 		<link rel="stylesheet" type="text/css" href="css/component.css" />
 	</head>
@@ -13,20 +13,20 @@
                 <h1>Site Title</h1>
                 <ul>
                 	<li><a href="index.html">Home</a></li>
-                    <li><a href="ListOfPeople.html" class="active">List of People</a></li>
-                    <li><a href="ListOfSwitches.html">List of Switches</a></li>
+                    <li><a href="ListOfPeople.html">List of People</a></li>
+                    <li><a href="ListOfSwitches.html" class="active">List of Switches</a></li>
                 </ul>
             </header>
             <div class="main">
                 <div class="inner">
-                    <h1>List Of People</h1>
+                    <h1>List Of Switches</h1>
                     
-                    <ol class="people">
-                        <li>Alex   &nbsp; &nbsp;&nbsp; &nbsp;<button type="button">Set preferenves</button> </li>
-                        <li>Alan    &nbsp; &nbsp;&nbsp; &nbsp; <button type="button">Set preferenves</button> </li>
-                        <li>Neil    &nbsp; &nbsp; &nbsp; &nbsp; <button type="button">Set preferenves</button> </li>
-                        <li>Eric    &nbsp; &nbsp;&nbsp; &nbsp;   <button type="button">Set preferenves</button></li>
-                    </ol>
+                    <br>
+                    <div id="switches">
+						{% for s in switches %}
+						<li><a href="/switches/{{s.id}}">{{s.id}}: {{s.description}}</a></li>
+						{% endfor %}
+                    </div>
                 </div>
                 <div class="clr"></div>
     			<footer> 
