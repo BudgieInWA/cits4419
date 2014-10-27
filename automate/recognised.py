@@ -13,7 +13,7 @@ DB_NAME = {
     "sensor": "sensor.sqlite"
 }
 
-SWITCH_URL = 'TODO'
+SWITCH_URL = 'http://192.168.0.100:8080/switches'
 
 def get_database(db):
     """Loads the 'prefs' or the 'sensor' database and returns the sqlite connection object."""
@@ -24,6 +24,7 @@ def get_database(db):
 def record_recognition(person):
 	sensor = get_database('sensor')
 	time = datetime.datetime.now()
+        print time
 
 	sensor.execute("INSERT INTO recognition_events VALUES (?, ?)",
 			(person, time))
@@ -32,10 +33,7 @@ def record_recognition(person):
 def send_json_put(url, payload):
 	headers = {'content-type': 'application/json'}
 	print "only pretending to send %s" % json.dumps(payload)
-	return #TODO
-	requests.put(url,
-				 data=json.dumps(payload),
-				 headers=headers)
+	print requests.put(url, data=json.dumps(payload), headers=headers)
 
 
 def recognition_action(person):
@@ -44,7 +42,7 @@ def recognition_action(person):
 			(person,))
 	for a in actions:
 		payload = {'switch': a['switch'], 'state':a['state']}
-		send_json_put(SWITCH_URL+"/"+str(a['switch']), payload)
+		send_json_put(SWITCH_URL+"/"+str(a['switch'])+"/state", payload)
 	
 def usage(script):
 	print "Usage: %s <person>" % script

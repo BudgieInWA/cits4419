@@ -1,4 +1,4 @@
 create table recognition_events (
-	datetime DATETIME PRIMARY KEY,
+	datetime DATETIME,
 	person   VARCHAR(255)
 );
