@@ -1,11 +1,13 @@
 """Responds to a person being recognised and stores the event in the database."""
 
+import os
 import sqlite3
 import datetime
 import requests
 import json
 
-DB_PATH = '../'
+
+DB_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
 DB_NAME = {
     "prefs": "preferences.sqlite",
     "sensor": "sensor.sqlite"
@@ -15,7 +17,7 @@ SWITCH_URL = 'TODO'
 
 def get_database(db):
     """Loads the 'prefs' or the 'sensor' database and returns the sqlite connection object."""
-    ret = sqlite3.connect(DB_PATH + DB_NAME[db]);
+    ret = sqlite3.connect(os.path.join(DB_PATH, DB_NAME[db]));
     ret.row_factory = sqlite3.Row
     return ret
 
@@ -25,6 +27,7 @@ def record_recognition(person):
 
 	sensor.execute("INSERT INTO recognition_events VALUES (?, ?)",
 			(person, time))
+        sensor.commit()
 
 def send_json_put(url, payload):
 	headers = {'content-type': 'application/json'}
