@@ -5,7 +5,7 @@ import flask
 import sqlite3
 import re
 
-API_BASE = "/apiv0/"
+API_BASE = "/apiv1/"
 
 DB_PATH   = "../"
 DB_NAME = {
