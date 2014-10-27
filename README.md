@@ -21,8 +21,6 @@ publishes a web site that allows users to set preferences.
 Instillation
 ============
 
-TODO make this verbose and precise.
-
 Set up Rasperry Pi with camera, verify with raspicam.
 
 Set the time on your pi. You can do this using the `date` command line tool:
@@ -33,7 +31,9 @@ Clone this repo onto the pi.
 
 	$ git clone <url of this repo>
 
-Install sqlite3 if it's not installed: sudo apt-get install sqlite3.
+Install sqlite3 if it's not installed:
+
+	$ sudo apt-get install sqlite3.
 
 Set up the database:
 
